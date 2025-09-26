@@ -1,0 +1,10 @@
+### 1. User Login
+POST http://localhost:8080/api/v1/auth/login
+Content-Type: application/json
+
+{
+  "username": "kasir01",
+  "password": "Langit1105"
+}
+
+###
