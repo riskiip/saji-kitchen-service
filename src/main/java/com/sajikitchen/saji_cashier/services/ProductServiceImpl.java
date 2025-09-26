@@ -19,13 +19,14 @@ public class ProductServiceImpl implements ProductService {
     @Override
     public List<ProductVariantResponse> getActiveProductVariants() {
         return productVariantRepository.findAll().stream()
-                // Filter hanya untuk produk yang aktif
                 .filter(variant -> variant.getProduct().getIsActive())
-                .map(variant -> new ProductVariantResponse(
+                .map(variant -> new ProductVariantResponse( // <-- Perbarui mapper ini
                         variant.getVariantId(),
                         variant.getName(),
                         variant.getPrice(),
-                        variant.getProduct().getName()
+                        variant.getProduct().getName(),
+                        variant.getProduct().getImageUrl(), // <-- Ambil imageUrl
+                        variant.getProduct().getDescription() // <-- Ambil description
                 ))
                 .collect(Collectors.toList());
     }
