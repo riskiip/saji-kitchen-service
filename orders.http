@@ -1,0 +1,19 @@
+### Create a New Order
+POST http://localhost:8080/api/v1/orders
+Content-Type: application/json
+
+{
+  "customerEmail": "testing@sajikitchen.com",
+  "items": [
+    {
+      "variantId": 101,
+      "toppingId": 201,
+      "quantity": 1
+    },
+    {
+      "variantId": 102,
+      "toppingId": null,
+      "quantity": 2
+    }
+  ]
+}
