@@ -12,4 +12,5 @@ public class OrderResponse {
     private BigDecimal totalAmount;
     private String paymentStatus;
     private String createdAt; // Format: dd MMM yyyy HH:mm:ss
+    private String paymentConfirmedAt; // <-- Field baru
 }

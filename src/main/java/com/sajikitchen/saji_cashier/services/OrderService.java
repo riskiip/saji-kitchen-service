@@ -5,4 +5,5 @@ import com.sajikitchen.saji_cashier.dto.OrderResponse;
 
 public interface OrderService {
     OrderResponse createOrder(CreateOrderRequest request);
+    OrderResponse confirmPayment(String orderId); // <-- Method baru
 }

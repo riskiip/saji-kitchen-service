@@ -106,6 +106,35 @@ public class OrderServiceImpl implements OrderService {
                 .build();
     }
 
+    @Override
+    @Transactional
+    public OrderResponse confirmPayment(String orderId) {
+        // 1. Cari order berdasarkan ID
+        Order order = orderRepository.findById(orderId)
+                .orElseThrow(() -> new EntityNotFoundException("Order with ID " + orderId + " not found"));
+
+        // 2. Validasi status: hanya order PENDING yang bisa dikonfirmasi
+        if (!"PENDING".equalsIgnoreCase(order.getPaymentStatus())) {
+            throw new IllegalStateException("Order with ID " + orderId + " cannot be confirmed as it is not in PENDING status.");
+        }
+
+        // 3. Update status dan waktu konfirmasi
+        order.setPaymentStatus("PAID");
+        order.setPaymentConfirmedAt(OffsetDateTime.now(ZoneId.of("Asia/Jakarta")));
+
+        // 4. Simpan perubahan ke database
+        Order updatedOrder = orderRepository.save(order);
+
+        // 5. Kembalikan response DTO yang sudah diperbarui
+        return OrderResponse.builder()
+                .orderId(updatedOrder.getOrderId())
+                .totalAmount(updatedOrder.getTotalAmount())
+                .paymentStatus(updatedOrder.getPaymentStatus())
+                .createdAt(formatTimestamp(updatedOrder.getOrderDate()))
+                .paymentConfirmedAt(formatTimestamp(updatedOrder.getPaymentConfirmedAt()))
+                .build();
+    }
+
     private String generateOrderId() {
         // Format: ORD-YYYYMMDD-UUID(8)
         String datePart = DateTimeFormatter.ofPattern("yyyyMMdd").format(OffsetDateTime.now());
