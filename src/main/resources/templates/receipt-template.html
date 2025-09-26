@@ -1,0 +1,22 @@
+<!DOCTYPE html>
+<html xmlns:th="http://www.thymeleaf.org">
+<head>
+    <meta http-equiv="Content-Type" content="text/html; charset=UTF-8" />
+</head>
+<body style="font-family: Arial, sans-serif;">
+<h2>Terima kasih atas pesanan Anda!</h2>
+<p>Halo,</p>
+<p>
+    Pesanan Anda dengan nomor <strong th:text="${order.orderId}">ORD-123</strong> telah kami terima.
+    Struk digital terlampir dalam email ini.
+</p>
+<p>
+    Total Tagihan: <strong th:text="${#numbers.formatCurrency(order.totalAmount)}">Rp 50.000</strong>
+</p>
+<p>
+    Silakan lakukan pembayaran dengan memindai QRIS yang tersedia di kasir.
+</p>
+<hr/>
+<p>Hormat kami,<br/>Saji Kitchen</p>
+</body>
+</html>
