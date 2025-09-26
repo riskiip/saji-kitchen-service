@@ -5,6 +5,8 @@ import com.sajikitchen.saji_cashier.dto.OrderItemRequest;
 import com.sajikitchen.saji_cashier.dto.OrderResponse;
 import com.sajikitchen.saji_cashier.models.*;
 import com.sajikitchen.saji_cashier.repositories.*;
+import com.sajikitchen.saji_cashier.services.email.EmailService;
+import com.sajikitchen.saji_cashier.services.pdf.PdfGenerationService;
 import jakarta.persistence.EntityNotFoundException;
 import jakarta.transaction.Transactional;
 import org.springframework.stereotype.Service;
@@ -26,13 +28,17 @@ public class OrderServiceImpl implements OrderService {
     private final ToppingRepository toppingRepository;
     private final CustomerRepository customerRepository;
     private final UserRepository userRepository; // Untuk mengambil data kasir
+    private final PdfGenerationService pdfGenerationService;
+    private final EmailService emailService;
 
-    public OrderServiceImpl(OrderRepository orderRepository, ProductVariantRepository productVariantRepository, ToppingRepository toppingRepository, CustomerRepository customerRepository, UserRepository userRepository) {
+    public OrderServiceImpl(OrderRepository orderRepository, ProductVariantRepository productVariantRepository, ToppingRepository toppingRepository, CustomerRepository customerRepository, UserRepository userRepository, PdfGenerationService pdfGenerationService, EmailService emailService) {
         this.orderRepository = orderRepository;
         this.productVariantRepository = productVariantRepository;
         this.toppingRepository = toppingRepository;
         this.customerRepository = customerRepository;
         this.userRepository = userRepository;
+        this.pdfGenerationService = pdfGenerationService;
+        this.emailService = emailService;
     }
 
     @Override
@@ -124,6 +130,18 @@ public class OrderServiceImpl implements OrderService {
 
         // 4. Simpan perubahan ke database
         Order updatedOrder = orderRepository.save(order);
+
+        // 5. Generate PDF dan kirim email (setelah order berhasil disimpan)
+        try {
+            byte[] pdfReceipt = pdfGenerationService.generateOrderReceipt(order);
+            System.out.println("PDF generated for order ID: " + order.getOrderId() + " - " + pdfReceipt.length + " bytes long.");
+            emailService.sendOrderConfirmationEmail(order.getCustomer().getEmail(), order, pdfReceipt);
+            System.out.println("Email sent to customer: " + order.getCustomer().getEmail() + " for order ID: " + order.getOrderId() + ".");
+        } catch (Exception e) {
+            // Di aplikasi production, log error ini tapi jangan sampai membuat transaksi gagal.
+            // Email/PDF yang gagal bisa di-retry nanti.
+            System.err.println("Gagal membuat PDF atau mengirim email untuk order ID: " + order.getOrderId() + " - " + e.getMessage());
+        }
 
         // 5. Kembalikan response DTO yang sudah diperbarui
         return OrderResponse.builder()
