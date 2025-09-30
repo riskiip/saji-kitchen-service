@@ -24,7 +24,8 @@ public class ToppingServiceImpl implements ToppingService {
                 .map(topping -> new ToppingResponse(
                         topping.getToppingId(),
                         topping.getName(),
-                        topping.getPrice()
+                        topping.getPrice(),
+                        topping.getImageUrl()
                 ))
                 .collect(Collectors.toList());
     }

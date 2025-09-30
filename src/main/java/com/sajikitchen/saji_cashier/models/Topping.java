@@ -6,6 +6,7 @@ import lombok.Setter;
 
 import java.math.BigDecimal;
 import java.time.OffsetDateTime;
+import java.util.UUID;
 
 @Entity
 @Table(name = "toppings")
@@ -14,9 +15,9 @@ import java.time.OffsetDateTime;
 public class Topping {
 
     @Id
-    @GeneratedValue(strategy = GenerationType.IDENTITY)
+    @GeneratedValue(strategy = GenerationType.UUID)
     @Column(name = "topping_id")
-    private Integer toppingId;
+    private UUID toppingId;
 
     @Column(nullable = false)
     private String name;
@@ -29,4 +30,7 @@ public class Topping {
 
     @Column(name = "created_at")
     private OffsetDateTime createdAt;
+
+    @Column(name = "image_url")
+    private String imageUrl;
 }
