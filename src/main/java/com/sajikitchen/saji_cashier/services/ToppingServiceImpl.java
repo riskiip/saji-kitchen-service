@@ -20,13 +20,14 @@ public class ToppingServiceImpl implements ToppingService {
     public List<ToppingResponse> getActiveToppings() {
         return toppingRepository.findAll().stream()
                 // Filter hanya topping yang aktif
-                .filter(topping -> topping.getIsActive())
-                .map(topping -> new ToppingResponse(
-                        topping.getToppingId(),
-                        topping.getName(),
-                        topping.getPrice(),
-                        topping.getImageUrl()
-                ))
+                .filter(topping -> topping.isActive())
+                .map(topping -> ToppingResponse.builder()
+                        .toppingId(topping.getToppingId())
+                        .name(topping.getName())
+                        .price(topping.getPrice())
+                        .imageUrl(topping.getImageUrl())
+                        .isActive(topping.isActive())
+                        .build())
                 .collect(Collectors.toList());
     }
 }

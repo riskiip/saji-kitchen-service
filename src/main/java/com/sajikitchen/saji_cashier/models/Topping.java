@@ -13,10 +13,9 @@ import java.util.UUID;
 @Getter
 @Setter
 public class Topping {
-
     @Id
-    @GeneratedValue(strategy = GenerationType.UUID)
-    @Column(name = "topping_id")
+    @GeneratedValue(strategy = GenerationType.AUTO)
+    @Column(name = "topping_id", updatable = false, nullable = false)
     private UUID toppingId;
 
     @Column(nullable = false)
@@ -26,11 +25,16 @@ public class Topping {
     private BigDecimal price;
 
     @Column(name = "is_active")
-    private Boolean isActive;
-
-    @Column(name = "created_at")
-    private OffsetDateTime createdAt;
+    private boolean isActive = true;
 
     @Column(name = "image_url")
     private String imageUrl;
+
+    @Column(name = "created_at", updatable = false)
+    private OffsetDateTime createdAt;
+
+    @PrePersist
+    protected void onCreate() {
+        createdAt = OffsetDateTime.now();
+    }
 }

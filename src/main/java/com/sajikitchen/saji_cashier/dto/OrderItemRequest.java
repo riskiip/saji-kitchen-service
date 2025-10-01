@@ -6,7 +6,7 @@ import java.util.UUID;
 
 @Data
 public class OrderItemRequest {
-    private String variantId;
-    private String toppingId; // Boleh null
+    private UUID variantId;
+    private UUID toppingId;
     private Integer quantity;
 }

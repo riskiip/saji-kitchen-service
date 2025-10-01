@@ -7,6 +7,7 @@ import com.sajikitchen.saji_cashier.dto.StandardApiResponse;
 import com.sajikitchen.saji_cashier.services.OrderService;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
+import org.springframework.security.access.prepost.PreAuthorize;
 import org.springframework.web.bind.annotation.*;
 
 @RestController
@@ -37,6 +38,7 @@ public class OrderController {
     }
 
     @PutMapping("/{orderId}/payment-confirmation")
+    @PreAuthorize("hasAuthority('CASHIER')")
     public ResponseEntity<StandardApiResponse<OrderResponse>> confirmOrderPayment(@PathVariable String orderId) {
         // Panggil service untuk konfirmasi pembayaran
         OrderResponse orderResponse = orderService.confirmPayment(orderId);

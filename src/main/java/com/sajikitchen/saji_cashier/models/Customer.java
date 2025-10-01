@@ -3,8 +3,6 @@ package com.sajikitchen.saji_cashier.models;
 import jakarta.persistence.*;
 import lombok.Getter;
 import lombok.Setter;
-import org.hibernate.annotations.JdbcTypeCode;
-import org.hibernate.type.SqlTypes;
 
 import java.time.OffsetDateTime;
 import java.util.UUID;
@@ -14,11 +12,9 @@ import java.util.UUID;
 @Getter
 @Setter
 public class Customer {
-
     @Id
-    @GeneratedValue(strategy = GenerationType.UUID)
-    @Column(name = "customer_id")
-    @JdbcTypeCode(SqlTypes.UUID)
+    @GeneratedValue(strategy = GenerationType.AUTO)
+    @Column(name = "customer_id", updatable = false, nullable = false)
     private UUID customerId;
 
     @Column(unique = true, nullable = false)
@@ -26,6 +22,11 @@ public class Customer {
 
     private String name;
 
-    @Column(name = "created_at")
+    @Column(name = "created_at", updatable = false)
     private OffsetDateTime createdAt;
+
+    @PrePersist
+    protected void onCreate() {
+        createdAt = OffsetDateTime.now();
+    }
 }
