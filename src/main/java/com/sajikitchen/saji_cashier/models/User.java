@@ -5,17 +5,17 @@ import lombok.Getter;
 import lombok.Setter;
 
 import java.time.OffsetDateTime;
+import java.util.UUID;
 
 @Entity
 @Table(name = "users")
 @Getter
 @Setter
 public class User {
-
     @Id
-    @GeneratedValue(strategy = GenerationType.IDENTITY)
-    @Column(name = "user_id")
-    private Integer userId;
+    @GeneratedValue(strategy = GenerationType.AUTO)
+    @Column(name = "user_id", updatable = false, nullable = false)
+    private UUID userId;
 
     @Column(unique = true, nullable = false)
     private String username;
@@ -27,6 +27,11 @@ public class User {
     @JoinColumn(name = "role_id", nullable = false)
     private Role role;
 
-    @Column(name = "created_at")
+    @Column(name = "created_at", updatable = false)
     private OffsetDateTime createdAt;
+
+    @PrePersist
+    protected void onCreate() {
+        createdAt = OffsetDateTime.now();
+    }
 }
