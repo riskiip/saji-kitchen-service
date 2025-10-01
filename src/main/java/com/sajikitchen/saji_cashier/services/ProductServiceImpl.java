@@ -19,15 +19,17 @@ public class ProductServiceImpl implements ProductService {
     @Override
     public List<ProductVariantResponse> getActiveProductVariants() {
         return productVariantRepository.findAll().stream()
-                .filter(variant -> variant.getProduct().getIsActive())
-                .map(variant -> new ProductVariantResponse( // <-- Perbarui mapper ini
-                        variant.getVariantId(),
-                        variant.getName(),
-                        variant.getPrice(),
-                        variant.getProduct().getName(),
-                        variant.getProduct().getImageUrl(), // <-- Ambil imageUrl
-                        variant.getProduct().getDescription() // <-- Ambil description
-                ))
+                // PERBAIKAN #1: Gunakan isActive()
+                .filter(variant -> variant.getProduct().isActive())
+                // PERBAIKAN #2: Gunakan builder untuk membuat DTO
+                .map(variant -> ProductVariantResponse.builder()
+                        .variantId(variant.getVariantId())
+                        .variantName(variant.getName()) // Nama dari variant
+                        .price(variant.getPrice())
+                        .productName(variant.getProduct().getName()) // Nama dari product induk
+                        .imageUrl(variant.getProduct().getImageUrl())
+                        .description(variant.getProduct().getDescription())
+                        .build())
                 .collect(Collectors.toList());
     }
 }

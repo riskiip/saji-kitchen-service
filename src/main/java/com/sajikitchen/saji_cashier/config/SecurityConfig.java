@@ -4,11 +4,11 @@ import com.sajikitchen.saji_cashier.security.JwtAuthenticationFilter;
 import lombok.RequiredArgsConstructor;
 import org.springframework.context.annotation.Bean;
 import org.springframework.context.annotation.Configuration;
-import org.springframework.http.HttpMethod;
 import org.springframework.security.authentication.AuthenticationManager;
 import org.springframework.security.authentication.AuthenticationProvider;
 import org.springframework.security.authentication.dao.DaoAuthenticationProvider;
 import org.springframework.security.config.annotation.authentication.configuration.AuthenticationConfiguration;
+import org.springframework.security.config.annotation.method.configuration.EnableMethodSecurity;
 import org.springframework.security.config.annotation.web.builders.HttpSecurity;
 import org.springframework.security.config.annotation.web.configuration.EnableWebSecurity;
 import org.springframework.security.config.http.SessionCreationPolicy;
@@ -29,6 +29,7 @@ import static org.springframework.security.config.Customizer.withDefaults;
 
 @Configuration
 @EnableWebSecurity
+@EnableMethodSecurity
 @RequiredArgsConstructor
 public class SecurityConfig {
 
@@ -38,17 +39,11 @@ public class SecurityConfig {
     @Bean
     public SecurityFilterChain securityFilterChain(HttpSecurity http) throws Exception {
         http
-                .cors(withDefaults()) // <-- Menggunakan metode baru yang mengambil CorsConfigurationSource Bean
+                .cors(withDefaults())
                 .csrf(csrf -> csrf.disable())
                 .authorizeHttpRequests(auth -> auth
                         .requestMatchers("/api/v1/auth/**").permitAll()
-                        // --- BAGIAN BARU YANG PENTING ---
-                        // Izinkan user dengan role 'CASHIER' mengakses endpoint GET produk dan topping
-                        .requestMatchers(HttpMethod.GET, "/api/v1/products/**", "/api/v1/toppings/**").hasAuthority("CASHIER")
-                        // Izinkan user dengan role 'CASHIER' mengakses endpoint POST dan PUT order
-                        .requestMatchers(HttpMethod.POST, "/api/v1/orders/**").hasAuthority("CASHIER")
-                        .requestMatchers(HttpMethod.PUT, "/api/v1/orders/**").hasAuthority("CASHIER")
-                        // --------------------------------
+                        .requestMatchers("/api/v1/menu/**").permitAll()
                         .anyRequest().authenticated()
                 )
                 .sessionManagement(sess -> sess.sessionCreationPolicy(SessionCreationPolicy.STATELESS))

@@ -1,19 +1,19 @@
 package com.sajikitchen.saji_cashier.dto;
 
-import lombok.AllArgsConstructor;
-import lombok.Getter;
-import lombok.Setter;
+import lombok.*;
 
 import java.math.BigDecimal;
+import java.util.UUID;
 
-@Getter
-@Setter
-@AllArgsConstructor
+@Data
+@Builder // Pastikan ada @Builder
 public class ProductVariantResponse {
-    private Integer id;
-    private String name;
+    private UUID variantId;
+    private String variantName; // Ganti nama agar lebih jelas
     private BigDecimal price;
+
+    // Field tambahan dari Product
     private String productName;
-    private String imageUrl; // <-- Tambahan
-    private String description; // <-- Tambahan
+    private String imageUrl;
+    private String description;
 }

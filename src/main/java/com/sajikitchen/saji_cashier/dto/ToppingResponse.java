@@ -1,16 +1,16 @@
 package com.sajikitchen.saji_cashier.dto;
 
-import lombok.AllArgsConstructor;
-import lombok.Getter;
-import lombok.Setter;
+import lombok.*;
 
 import java.math.BigDecimal;
+import java.util.UUID;
 
-@Getter
-@Setter
-@AllArgsConstructor
+@Data
+@Builder
 public class ToppingResponse {
-    private Integer id;
+    private UUID toppingId;
     private String name;
     private BigDecimal price;
+    private String imageUrl;
+    private boolean isActive;
 }
