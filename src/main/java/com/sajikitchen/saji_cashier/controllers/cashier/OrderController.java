@@ -1,10 +1,10 @@
-package com.sajikitchen.saji_cashier.controllers;
+package com.sajikitchen.saji_cashier.controllers.cashier;
 
-import com.sajikitchen.saji_cashier.dto.CreateOrderRequest;
-import com.sajikitchen.saji_cashier.dto.ErrorSchema;
-import com.sajikitchen.saji_cashier.dto.OrderResponse;
-import com.sajikitchen.saji_cashier.dto.StandardApiResponse;
-import com.sajikitchen.saji_cashier.services.OrderService;
+import com.sajikitchen.saji_cashier.dto.cashier.CreateOrderRequest;
+import com.sajikitchen.saji_cashier.dto.cashier.ErrorSchema;
+import com.sajikitchen.saji_cashier.dto.cashier.OrderResponse;
+import com.sajikitchen.saji_cashier.dto.cashier.StandardApiResponse;
+import com.sajikitchen.saji_cashier.services.cashier.OrderService;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
 import org.springframework.security.access.prepost.PreAuthorize;

@@ -1,9 +1,9 @@
-package com.sajikitchen.saji_cashier.controllers;
+package com.sajikitchen.saji_cashier.controllers.cashier;
 
-import com.sajikitchen.saji_cashier.dto.ErrorSchema;
-import com.sajikitchen.saji_cashier.dto.StandardApiResponse;
-import com.sajikitchen.saji_cashier.dto.ToppingResponse;
-import com.sajikitchen.saji_cashier.services.ToppingService;
+import com.sajikitchen.saji_cashier.dto.cashier.ErrorSchema;
+import com.sajikitchen.saji_cashier.dto.cashier.StandardApiResponse;
+import com.sajikitchen.saji_cashier.dto.cashier.ToppingResponse;
+import com.sajikitchen.saji_cashier.services.cashier.ToppingService;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.GetMapping;

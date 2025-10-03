@@ -1,0 +1,22 @@
+### =======================================
+### ADMIN AUTHENTICATION & DASHBOARD
+### =======================================
+
+### 1. Login as ADMIN
+# @name loginAdmin
+POST http://localhost:8080/api/v1/auth/login
+Content-Type: application/json
+
+{
+  "username": "admin01",
+  "password": "Langit1105"
+}
+
+### Tangkap token JWT dari response login
+@authToken = {{loginAdmin.response.body.token}}
+
+
+### 2. Get Admin Dashboard Data
+# @name getDashboard
+GET http://localhost:8080/api/v1/admin/dashboard
+Authorization: Bearer {{authToken}}

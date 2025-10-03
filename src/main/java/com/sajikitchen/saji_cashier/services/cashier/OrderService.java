@@ -1,7 +1,7 @@
-package com.sajikitchen.saji_cashier.services;
+package com.sajikitchen.saji_cashier.services.cashier;
 
-import com.sajikitchen.saji_cashier.dto.CreateOrderRequest;
-import com.sajikitchen.saji_cashier.dto.OrderResponse;
+import com.sajikitchen.saji_cashier.dto.cashier.CreateOrderRequest;
+import com.sajikitchen.saji_cashier.dto.cashier.OrderResponse;
 
 public interface OrderService {
     OrderResponse createOrder(CreateOrderRequest request);

@@ -1,7 +1,7 @@
-package com.sajikitchen.saji_cashier.controllers;
+package com.sajikitchen.saji_cashier.controllers.cashier;
 
-import com.sajikitchen.saji_cashier.dto.LoginRequest;
-import com.sajikitchen.saji_cashier.dto.LoginResponse;
+import com.sajikitchen.saji_cashier.dto.cashier.LoginRequest;
+import com.sajikitchen.saji_cashier.dto.cashier.LoginResponse;
 import com.sajikitchen.saji_cashier.security.JwtService;
 import lombok.RequiredArgsConstructor;
 import org.springframework.http.ResponseEntity;

@@ -1,6 +1,6 @@
-package com.sajikitchen.saji_cashier.services;
+package com.sajikitchen.saji_cashier.services.cashier;
 
-import com.sajikitchen.saji_cashier.dto.ProductVariantResponse;
+import com.sajikitchen.saji_cashier.dto.cashier.ProductVariantResponse;
 import com.sajikitchen.saji_cashier.repositories.ProductVariantRepository;
 import org.springframework.stereotype.Service;
 

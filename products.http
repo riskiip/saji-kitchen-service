@@ -1,4 +1,14 @@
+### 1. Login as ADMIN
+# @name loginAdmin
+POST http://localhost:8080/api/v1/auth/login
+Content-Type: application/json
+
+{
+  "username": "kasir01",
+  "password": "Langit1105"
+}
+
 ### GET request to example server
-GET http://localhost:8080/api/v1/products
+GET http://localhost:8080/api/v1/menu/products
 
 ###

@@ -1,8 +1,8 @@
-package com.sajikitchen.saji_cashier.controllers;
+package com.sajikitchen.saji_cashier.controllers.cashier;
 
-import com.sajikitchen.saji_cashier.dto.ProductResponse;
-import com.sajikitchen.saji_cashier.dto.ToppingResponse;
-import com.sajikitchen.saji_cashier.services.MenuService;
+import com.sajikitchen.saji_cashier.dto.cashier.ProductResponse;
+import com.sajikitchen.saji_cashier.dto.cashier.ToppingResponse;
+import com.sajikitchen.saji_cashier.services.cashier.MenuService;
 import lombok.RequiredArgsConstructor;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.GetMapping;
@@ -12,7 +12,7 @@ import org.springframework.web.bind.annotation.RestController;
 import java.util.List;
 
 @RestController
-@RequestMapping("/api/v1/menu") // <-- Kuncinya ada di sini, harus ada '/menu'
+@RequestMapping("/api/v1/menu")
 @RequiredArgsConstructor
 public class MenuController {
 

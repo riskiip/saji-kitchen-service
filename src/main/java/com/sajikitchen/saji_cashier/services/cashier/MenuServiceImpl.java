@@ -1,8 +1,8 @@
-package com.sajikitchen.saji_cashier.services;
+package com.sajikitchen.saji_cashier.services.cashier;
 
-import com.sajikitchen.saji_cashier.dto.ProductResponse;
-import com.sajikitchen.saji_cashier.dto.ProductVariantResponse;
-import com.sajikitchen.saji_cashier.dto.ToppingResponse;
+import com.sajikitchen.saji_cashier.dto.cashier.ProductResponse;
+import com.sajikitchen.saji_cashier.dto.cashier.ProductVariantResponse;
+import com.sajikitchen.saji_cashier.dto.cashier.ToppingResponse;
 import com.sajikitchen.saji_cashier.models.Product;
 import com.sajikitchen.saji_cashier.models.Topping;
 import com.sajikitchen.saji_cashier.repositories.ProductRepository;

@@ -1,9 +1,9 @@
-package com.sajikitchen.saji_cashier.services;
+package com.sajikitchen.saji_cashier.services.cashier;
 
-import com.sajikitchen.saji_cashier.dto.CreateOrderRequest;
-import com.sajikitchen.saji_cashier.dto.OrderItemRequest;
-import com.sajikitchen.saji_cashier.dto.OrderItemResponse;
-import com.sajikitchen.saji_cashier.dto.OrderResponse;
+import com.sajikitchen.saji_cashier.dto.cashier.CreateOrderRequest;
+import com.sajikitchen.saji_cashier.dto.cashier.OrderItemRequest;
+import com.sajikitchen.saji_cashier.dto.cashier.OrderItemResponse;
+import com.sajikitchen.saji_cashier.dto.cashier.OrderResponse;
 import com.sajikitchen.saji_cashier.models.*;
 import com.sajikitchen.saji_cashier.repositories.*;
 import com.sajikitchen.saji_cashier.services.email.EmailService;

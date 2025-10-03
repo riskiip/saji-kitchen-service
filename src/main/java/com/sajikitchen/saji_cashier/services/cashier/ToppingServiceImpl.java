@@ -1,6 +1,6 @@
-package com.sajikitchen.saji_cashier.services;
+package com.sajikitchen.saji_cashier.services.cashier;
 
-import com.sajikitchen.saji_cashier.dto.ToppingResponse;
+import com.sajikitchen.saji_cashier.dto.cashier.ToppingResponse;
 import com.sajikitchen.saji_cashier.repositories.ToppingRepository;
 import org.springframework.stereotype.Service;
 

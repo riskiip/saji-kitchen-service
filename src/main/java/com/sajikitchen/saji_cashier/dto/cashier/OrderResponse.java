@@ -1,4 +1,4 @@
-package com.sajikitchen.saji_cashier.dto;
+package com.sajikitchen.saji_cashier.dto.cashier;
 
 import lombok.Builder;
 import lombok.Data;
