@@ -1,10 +1,10 @@
 package com.sajikitchen.saji_cashier.services.admin;
 
-import com.sajikitchen.saji_cashier.dto.admin.CashierSalesDto;
-import com.sajikitchen.saji_cashier.dto.admin.DailySalesDetailDto;
-import com.sajikitchen.saji_cashier.dto.admin.DailySalesDto;
-import com.sajikitchen.saji_cashier.dto.admin.DashboardDataDto;
+import com.sajikitchen.saji_cashier.dto.admin.*;
+import com.sajikitchen.saji_cashier.models.Product;
 import com.sajikitchen.saji_cashier.repositories.OrderRepository;
+import com.sajikitchen.saji_cashier.repositories.ProductRepository;
+import jakarta.persistence.EntityNotFoundException;
 import lombok.RequiredArgsConstructor;
 import org.springframework.stereotype.Service;
 
@@ -15,6 +15,7 @@ import java.time.OffsetDateTime;
 import java.time.ZoneId;
 import java.time.format.DateTimeParseException;
 import java.util.List;
+import java.util.UUID;
 
 @Service
 @RequiredArgsConstructor
@@ -22,6 +23,7 @@ public class AdminServiceImpl implements AdminService {
 
     private final OrderRepository orderRepository;
     private final ZoneId jakartaZone = ZoneId.of("Asia/Jakarta");
+    private final ProductRepository productRepository;
 
     @Override
     public DashboardDataDto getDashboardData() {
@@ -63,5 +65,38 @@ public class AdminServiceImpl implements AdminService {
         OffsetDateTime endOfDay = localDate.atTime(LocalTime.MAX).atOffset(jakartaZone.getRules().getOffset(java.time.Instant.now()));
 
         return orderRepository.findSalesDetailByDate(startOfDay, endOfDay);
+    }
+
+    @Override
+    public Product createProduct(ProductRequestDto request) {
+        Product newProduct = new Product();
+        newProduct.setName(request.getName());
+        newProduct.setDescription(request.getDescription());
+        newProduct.setImageUrl(request.getImageUrl());
+        newProduct.setActive(request.getIsActive() != null ? request.getIsActive() : true);
+        return productRepository.save(newProduct);
+    }
+
+    @Override
+    public Product updateProduct(UUID productId, ProductRequestDto request) {
+        Product existingProduct = productRepository.findById(productId)
+                .orElseThrow(() -> new EntityNotFoundException("Product not found with id: " + productId));
+
+        existingProduct.setName(request.getName());
+        existingProduct.setDescription(request.getDescription());
+        existingProduct.setImageUrl(request.getImageUrl());
+        if (request.getIsActive() != null) {
+            existingProduct.setActive(request.getIsActive());
+        }
+        return productRepository.save(existingProduct);
+    }
+
+    @Override
+    public void deleteProduct(UUID productId) {
+        Product product = productRepository.findById(productId)
+                .orElseThrow(() -> new EntityNotFoundException("Product not found with id: " + productId));
+
+        product.setActive(false); // Soft delete
+        productRepository.save(product);
     }
 }

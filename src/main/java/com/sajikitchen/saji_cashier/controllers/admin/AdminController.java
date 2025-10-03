@@ -2,15 +2,16 @@ package com.sajikitchen.saji_cashier.controllers.admin;
 
 import com.sajikitchen.saji_cashier.dto.admin.DailySalesDetailDto;
 import com.sajikitchen.saji_cashier.dto.admin.DashboardDataDto;
+import com.sajikitchen.saji_cashier.dto.admin.ProductRequestDto;
+import com.sajikitchen.saji_cashier.models.Product;
 import com.sajikitchen.saji_cashier.services.admin.AdminService;
 import lombok.RequiredArgsConstructor;
+import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
-import org.springframework.web.bind.annotation.GetMapping;
-import org.springframework.web.bind.annotation.RequestMapping;
-import org.springframework.web.bind.annotation.RequestParam;
-import org.springframework.web.bind.annotation.RestController;
+import org.springframework.web.bind.annotation.*;
 
 import java.util.List;
+import java.util.UUID;
 
 @RestController
 @RequestMapping("/api/v1/admin")
@@ -37,5 +38,22 @@ public class AdminController {
         List<DailySalesDetailDto> salesDetail = adminService.getDailySalesDetail(dateToQuery);
         return ResponseEntity.ok(salesDetail);
     }
-    // Endpoint untuk CRUD Produk dan User akan ditambahkan di sini nanti
+
+    @PostMapping("/products")
+    public ResponseEntity<Product> createProduct(@RequestBody ProductRequestDto request) {
+        Product newProduct = adminService.createProduct(request);
+        return new ResponseEntity<>(newProduct, HttpStatus.CREATED);
+    }
+
+    @PutMapping("/products/{productId}")
+    public ResponseEntity<Product> updateProduct(@PathVariable UUID productId, @RequestBody ProductRequestDto request) {
+        Product updatedProduct = adminService.updateProduct(productId, request);
+        return ResponseEntity.ok(updatedProduct);
+    }
+
+    @DeleteMapping("/products/{productId}")
+    public ResponseEntity<Void> deleteProduct(@PathVariable UUID productId) {
+        adminService.deleteProduct(productId);
+        return ResponseEntity.noContent().build();
+    }
 }
