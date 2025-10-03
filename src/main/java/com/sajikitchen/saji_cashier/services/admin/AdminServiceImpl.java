@@ -1,6 +1,7 @@
 package com.sajikitchen.saji_cashier.services.admin;
 
 import com.sajikitchen.saji_cashier.dto.admin.CashierSalesDto;
+import com.sajikitchen.saji_cashier.dto.admin.DailySalesDetailDto;
 import com.sajikitchen.saji_cashier.dto.admin.DailySalesDto;
 import com.sajikitchen.saji_cashier.dto.admin.DashboardDataDto;
 import com.sajikitchen.saji_cashier.repositories.OrderRepository;
@@ -12,6 +13,7 @@ import java.time.LocalDate;
 import java.time.LocalTime;
 import java.time.OffsetDateTime;
 import java.time.ZoneId;
+import java.time.format.DateTimeParseException;
 import java.util.List;
 
 @Service
@@ -45,5 +47,21 @@ public class AdminServiceImpl implements AdminService {
                 .dailySales(dailySales)
                 .salesByCashier(salesByCashier)
                 .build();
+    }
+
+    @Override
+    public List<DailySalesDetailDto> getDailySalesDetail(String date) {
+        LocalDate localDate;
+        try {
+            localDate = LocalDate.parse(date); // Parsing tanggal dari string format "YYYY-MM-DD"
+        } catch (DateTimeParseException e) {
+            // Jika format tanggal salah, gunakan tanggal hari ini sebagai default
+            localDate = LocalDate.now(jakartaZone);
+        }
+
+        OffsetDateTime startOfDay = localDate.atStartOfDay().atOffset(jakartaZone.getRules().getOffset(java.time.Instant.now()));
+        OffsetDateTime endOfDay = localDate.atTime(LocalTime.MAX).atOffset(jakartaZone.getRules().getOffset(java.time.Instant.now()));
+
+        return orderRepository.findSalesDetailByDate(startOfDay, endOfDay);
     }
 }

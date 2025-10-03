@@ -20,3 +20,10 @@ Content-Type: application/json
 # @name getDashboard
 GET http://localhost:8080/api/v1/admin/dashboard
 Authorization: Bearer {{authToken}}
+
+### 3. Get Sales Detail for a SPECIFIC DATE
+# Ganti tanggal '2025-10-02' dengan tanggal yang ingin Anda tes.
+# Format harus YYYY-MM-DD.
+# @name getSpecificDateSalesDetail
+GET http://localhost:8080/api/v1/admin/dashboard/sales-detail?date=2025-10-02
+Authorization: Bearer {{authToken}}
