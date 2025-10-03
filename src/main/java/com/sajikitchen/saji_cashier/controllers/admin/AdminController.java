@@ -1,9 +1,9 @@
 package com.sajikitchen.saji_cashier.controllers.admin;
 
-import com.sajikitchen.saji_cashier.dto.admin.DailySalesDetailDto;
-import com.sajikitchen.saji_cashier.dto.admin.DashboardDataDto;
-import com.sajikitchen.saji_cashier.dto.admin.ProductRequestDto;
+import com.sajikitchen.saji_cashier.dto.admin.*;
 import com.sajikitchen.saji_cashier.models.Product;
+import com.sajikitchen.saji_cashier.models.ProductVariant;
+import com.sajikitchen.saji_cashier.models.Topping;
 import com.sajikitchen.saji_cashier.services.admin.AdminService;
 import lombok.RequiredArgsConstructor;
 import org.springframework.http.HttpStatus;
@@ -55,5 +55,38 @@ public class AdminController {
     public ResponseEntity<Void> deleteProduct(@PathVariable UUID productId) {
         adminService.deleteProduct(productId);
         return ResponseEntity.noContent().build();
+    }
+
+    @PostMapping("/products/{productId}/variants")
+    public ResponseEntity<ProductVariant> createVariant(
+            @PathVariable UUID productId,
+            @RequestBody VariantRequestDto request) {
+        ProductVariant newVariant = adminService.createVariant(productId, request);
+        return new ResponseEntity<>(newVariant, HttpStatus.CREATED);
+    }
+
+    @PutMapping("/variants/{variantId}")
+    public ResponseEntity<ProductVariant> updateVariant(
+            @PathVariable UUID variantId,
+            @RequestBody VariantRequestDto request) {
+        ProductVariant updatedVariant = adminService.updateVariant(variantId, request);
+        return ResponseEntity.ok(updatedVariant);
+    }
+
+    // ==========================================================
+    // ENDPOINT UNTUK MANAJEMEN TOPPING
+    // ==========================================================
+    @PostMapping("/toppings")
+    public ResponseEntity<Topping> createTopping(@RequestBody ToppingRequestDto request) {
+        Topping newTopping = adminService.createTopping(request);
+        return new ResponseEntity<>(newTopping, HttpStatus.CREATED);
+    }
+
+    @PutMapping("/toppings/{toppingId}")
+    public ResponseEntity<Topping> updateTopping(
+            @PathVariable UUID toppingId,
+            @RequestBody ToppingRequestDto request) {
+        Topping updatedTopping = adminService.updateTopping(toppingId, request);
+        return ResponseEntity.ok(updatedTopping);
     }
 }

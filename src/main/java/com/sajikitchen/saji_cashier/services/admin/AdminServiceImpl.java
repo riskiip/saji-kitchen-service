@@ -2,8 +2,12 @@ package com.sajikitchen.saji_cashier.services.admin;
 
 import com.sajikitchen.saji_cashier.dto.admin.*;
 import com.sajikitchen.saji_cashier.models.Product;
+import com.sajikitchen.saji_cashier.models.ProductVariant;
+import com.sajikitchen.saji_cashier.models.Topping;
 import com.sajikitchen.saji_cashier.repositories.OrderRepository;
 import com.sajikitchen.saji_cashier.repositories.ProductRepository;
+import com.sajikitchen.saji_cashier.repositories.ProductVariantRepository;
+import com.sajikitchen.saji_cashier.repositories.ToppingRepository;
 import jakarta.persistence.EntityNotFoundException;
 import lombok.RequiredArgsConstructor;
 import org.springframework.stereotype.Service;
@@ -24,6 +28,8 @@ public class AdminServiceImpl implements AdminService {
     private final OrderRepository orderRepository;
     private final ZoneId jakartaZone = ZoneId.of("Asia/Jakarta");
     private final ProductRepository productRepository;
+    private final ProductVariantRepository productVariantRepository;
+    private final ToppingRepository toppingRepository;
 
     @Override
     public DashboardDataDto getDashboardData() {
@@ -98,5 +104,55 @@ public class AdminServiceImpl implements AdminService {
 
         product.setActive(false); // Soft delete
         productRepository.save(product);
+    }
+
+    @Override
+    public ProductVariant createVariant(UUID productId, VariantRequestDto request) {
+        Product product = productRepository.findById(productId)
+                .orElseThrow(() -> new EntityNotFoundException("Product not found with id: " + productId));
+
+        ProductVariant newVariant = new ProductVariant();
+        newVariant.setProduct(product);
+        newVariant.setName(request.getName());
+        newVariant.setPrice(request.getPrice());
+
+        return productVariantRepository.save(newVariant);
+    }
+
+    @Override
+    public ProductVariant updateVariant(UUID variantId, VariantRequestDto request) {
+        ProductVariant existingVariant = productVariantRepository.findById(variantId)
+                .orElseThrow(() -> new EntityNotFoundException("Product Variant not found with id: " + variantId));
+
+        existingVariant.setName(request.getName());
+        existingVariant.setPrice(request.getPrice());
+
+        return productVariantRepository.save(existingVariant);
+    }
+
+    @Override
+    public Topping createTopping(ToppingRequestDto request) {
+        Topping newTopping = new Topping();
+        newTopping.setName(request.getName());
+        newTopping.setPrice(request.getPrice());
+        newTopping.setImageUrl(request.getImageUrl());
+        newTopping.setActive(request.getIsActive() != null ? request.getIsActive() : true);
+
+        return toppingRepository.save(newTopping);
+    }
+
+    @Override
+    public Topping updateTopping(UUID toppingId, ToppingRequestDto request) {
+        Topping existingTopping = toppingRepository.findById(toppingId)
+                .orElseThrow(() -> new EntityNotFoundException("Topping not found with id: " + toppingId));
+
+        existingTopping.setName(request.getName());
+        existingTopping.setPrice(request.getPrice());
+        existingTopping.setImageUrl(request.getImageUrl());
+        if (request.getIsActive() != null) {
+            existingTopping.setActive(request.getIsActive());
+        }
+
+        return toppingRepository.save(existingTopping);
     }
 }
