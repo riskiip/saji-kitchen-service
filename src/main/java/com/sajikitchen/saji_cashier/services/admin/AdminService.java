@@ -23,4 +23,8 @@ public interface AdminService {
     // --- Topping CRUD Methods ---
     Topping createTopping(ToppingRequestDto request);
     Topping updateTopping(UUID toppingId, ToppingRequestDto request);
+
+    List<UserResponseDto> findAllCashiers();
+    UserResponseDto createCashier(CreateUserRequestDto request);
+    UserResponseDto updateCashier(UUID userId, UpdateUserRequestDto request);
 }

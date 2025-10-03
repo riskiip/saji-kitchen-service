@@ -1,0 +1,51 @@
+### =======================================
+### ADMIN - USER (CASHIER) CRUD
+### =======================================
+
+### 1. Login as ADMIN (Prasyarat)
+# @name loginAdmin
+POST http://localhost:8080/api/v1/auth/login
+Content-Type: application/json
+
+{
+  "username": "admin01",
+  "password": "Langit1105"
+}
+
+### Tangkap token JWT
+@authToken = {{loginAdmin.response.body.token}}
+
+
+### 2. GET All Cashiers
+# Mengambil daftar semua user dengan role "CASHIER"
+# @name getAllCashiers
+GET http://localhost:8080/api/v1/admin/users
+Authorization: Bearer {{authToken}}
+
+
+### 3. CREATE a New Cashier
+# Mendaftarkan user baru sebagai kasir
+# @name createCashier
+POST http://localhost:8080/api/v1/admin/users
+Authorization: Bearer {{authToken}}
+Content-Type: application/json
+
+{
+  "username": "kasir02",
+  "password": "Password"
+}
+
+### Tangkap userId dari kasir yang baru dibuat
+@newCashierId = {{createCashier.response.body.userId}}
+
+
+### 4. UPDATE the Cashier's Status
+# Menonaktifkan akun kasir yang baru saja dibuat
+# @name updateCashier
+PUT http://localhost:8080/api/v1/admin/users/{{newCashierId}}
+Authorization: Bearer {{authToken}}
+Content-Type: application/json
+
+{
+  "isActive": false
+}

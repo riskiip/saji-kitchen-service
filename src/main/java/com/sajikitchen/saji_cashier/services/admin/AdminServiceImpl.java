@@ -1,15 +1,11 @@
 package com.sajikitchen.saji_cashier.services.admin;
 
 import com.sajikitchen.saji_cashier.dto.admin.*;
-import com.sajikitchen.saji_cashier.models.Product;
-import com.sajikitchen.saji_cashier.models.ProductVariant;
-import com.sajikitchen.saji_cashier.models.Topping;
-import com.sajikitchen.saji_cashier.repositories.OrderRepository;
-import com.sajikitchen.saji_cashier.repositories.ProductRepository;
-import com.sajikitchen.saji_cashier.repositories.ProductVariantRepository;
-import com.sajikitchen.saji_cashier.repositories.ToppingRepository;
+import com.sajikitchen.saji_cashier.models.*;
+import com.sajikitchen.saji_cashier.repositories.*;
 import jakarta.persistence.EntityNotFoundException;
 import lombok.RequiredArgsConstructor;
+import org.springframework.security.crypto.password.PasswordEncoder;
 import org.springframework.stereotype.Service;
 
 import java.math.BigDecimal;
@@ -20,6 +16,7 @@ import java.time.ZoneId;
 import java.time.format.DateTimeParseException;
 import java.util.List;
 import java.util.UUID;
+import java.util.stream.Collectors;
 
 @Service
 @RequiredArgsConstructor
@@ -30,6 +27,9 @@ public class AdminServiceImpl implements AdminService {
     private final ProductRepository productRepository;
     private final ProductVariantRepository productVariantRepository;
     private final ToppingRepository toppingRepository;
+    private final UserRepository userRepository;
+    private final RoleRepository roleRepository;
+    private final PasswordEncoder passwordEncoder;
 
     @Override
     public DashboardDataDto getDashboardData() {
@@ -154,5 +154,53 @@ public class AdminServiceImpl implements AdminService {
         }
 
         return toppingRepository.save(existingTopping);
+    }
+
+    @Override
+    public List<UserResponseDto> findAllCashiers() {
+        return userRepository.findAllByRoleRoleName("CASHIER").stream()
+                .map(this::mapUserToResponseDto)
+                .collect(Collectors.toList());
+    }
+
+    @Override
+    public UserResponseDto createCashier(CreateUserRequestDto request) {
+        if (userRepository.findByUsername(request.getUsername()).isPresent()) {
+            throw new IllegalStateException("Username already exists");
+        }
+
+        Role cashierRole = roleRepository.findByRoleName("CASHIER")
+                .orElseThrow(() -> new EntityNotFoundException("Role 'CASHIER' not found"));
+
+        User newCashier = new User();
+        newCashier.setUsername(request.getUsername());
+        newCashier.setPassword(passwordEncoder.encode(request.getPassword())); // Enkripsi password!
+        newCashier.setRole(cashierRole);
+        newCashier.setActive(true);
+
+        User savedUser = userRepository.save(newCashier);
+        return mapUserToResponseDto(savedUser);
+    }
+
+    @Override
+    public UserResponseDto updateCashier(UUID userId, UpdateUserRequestDto request) {
+        User existingUser = userRepository.findById(userId)
+                .orElseThrow(() -> new EntityNotFoundException("User not found with id: " + userId));
+
+        if (request.getIsActive() != null) {
+            existingUser.setActive(request.getIsActive());
+        }
+
+        User updatedUser = userRepository.save(existingUser);
+        return mapUserToResponseDto(updatedUser);
+    }
+
+    private UserResponseDto mapUserToResponseDto(User user) {
+        return UserResponseDto.builder()
+                .userId(user.getUserId())
+                .username(user.getUsername())
+                .roleName(user.getRole().getRoleName())
+                .isActive(user.isActive())
+                .build();
     }
 }

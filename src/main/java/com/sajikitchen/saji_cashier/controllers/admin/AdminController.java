@@ -89,4 +89,23 @@ public class AdminController {
         Topping updatedTopping = adminService.updateTopping(toppingId, request);
         return ResponseEntity.ok(updatedTopping);
     }
+
+    @GetMapping("/users")
+    public ResponseEntity<List<UserResponseDto>> getAllCashiers() {
+        return ResponseEntity.ok(adminService.findAllCashiers());
+    }
+
+    @PostMapping("/users")
+    public ResponseEntity<UserResponseDto> createCashier(@RequestBody CreateUserRequestDto request) {
+        UserResponseDto newCashier = adminService.createCashier(request);
+        return new ResponseEntity<>(newCashier, HttpStatus.CREATED);
+    }
+
+    @PutMapping("/users/{userId}")
+    public ResponseEntity<UserResponseDto> updateCashier(
+            @PathVariable UUID userId,
+            @RequestBody UpdateUserRequestDto request) {
+        UserResponseDto updatedCashier = adminService.updateCashier(userId, request);
+        return ResponseEntity.ok(updatedCashier);
+    }
 }
