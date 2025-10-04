@@ -110,18 +110,19 @@ public class OrderServiceImpl implements OrderService {
         Order updatedOrder = orderRepository.save(order);
 
         // Menjalankan proses pembuatan PDF dan pengiriman email
-        try {
-            log.info("Starting PDF generation for order ID: {}", updatedOrder.getOrderId());
-            byte[] pdfReceipt = pdfGenerationService.generateOrderReceipt(updatedOrder);
-            log.info("PDF generated successfully, size: {} bytes", pdfReceipt.length);
-
-            log.info("Sending order confirmation email to: {}", updatedOrder.getCustomer().getEmail());
-            emailService.sendOrderConfirmationEmail(updatedOrder.getCustomer().getEmail(), updatedOrder, pdfReceipt);
-            log.info("Email sent successfully for order ID: {}", updatedOrder.getOrderId());
-        } catch (Exception e) {
-            // Gunakan logger untuk mencatat error. Ini tidak akan menghentikan response ke user.
-            log.error("Failed to generate PDF or send email for order ID: {}", orderId, e);
-        }
+        // TODO: Comment sementara generate pdf dan kirim email, uncomment lagi nanti
+//        try {
+//            log.info("Starting PDF generation for order ID: {}", updatedOrder.getOrderId());
+//            byte[] pdfReceipt = pdfGenerationService.generateOrderReceipt(updatedOrder);
+//            log.info("PDF generated successfully, size: {} bytes", pdfReceipt.length);
+//
+//            log.info("Sending order confirmation email to: {}", updatedOrder.getCustomer().getEmail());
+//            emailService.sendOrderConfirmationEmail(updatedOrder.getCustomer().getEmail(), updatedOrder, pdfReceipt);
+//            log.info("Email sent successfully for order ID: {}", updatedOrder.getOrderId());
+//        } catch (Exception e) {
+//            // Gunakan logger untuk mencatat error. Ini tidak akan menghentikan response ke user.
+//            log.error("Failed to generate PDF or send email for order ID: {}", orderId, e);
+//        }
 
         return mapOrderToResponse(updatedOrder);
     }
